@@ -1,8 +1,8 @@
 {
   "name": "node-app-cli",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "A node cli application",
+  "main": "project.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,14 +10,21 @@
     "type": "git",
     "url": "git+https://github.com/aayushmau5/node-app-cli.git"
   },
-  "keywords": [],
-  "author": "",
+  "bin": {
+    "proj": "./project.js"
+  },
+  "keywords": [
+    "cli"
+  ],
+  "preferGlobal": true,
+  "author": "aayushmau5",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/aayushmau5/node-app-cli/issues"
   },
   "homepage": "https://github.com/aayushmau5/node-app-cli#readme",
   "dependencies": {
-    "yargs": "^16.1.0"
+    "commander": "^6.2.0",
+    "inquirer": "^7.3.3"
   }
 }

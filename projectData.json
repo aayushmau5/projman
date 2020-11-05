@@ -1,8 +1,27 @@
 [
   {
-    "id": 1,
-    "path": "path to file",
-    "name": "name of the project",
-    "editor": "editor"
+    "path": "/home/aayushmau5/Documents/My_Projects/node-app-cli",
+    "projectName": "node-app-cli",
+    "editor": "vscode(code)"
+  },
+  {
+    "path": "/home/aayushmau5/Documents/My_Projects/node-app-cli",
+    "projectName": "node-app-cli",
+    "editor": "neovim(nvim)"
+  },
+  {
+    "path": "/home/aayushmau5/Documents/My_Projects/node-app-cli",
+    "projectName": "node-app-cli",
+    "editor": "something"
+  },
+  {
+    "path": "/home/aayushmau5/Documents/My_Projects/node-app-cli",
+    "projectName": "SOmething else",
+    "editor": "vim(vim)"
+  },
+  {
+    "path": "./node-alic",
+    "projectName": "node-app-cli",
+    "editor": "vscode(code)"
   }
 ]

@@ -4,6 +4,7 @@ const path = require('path');
 
 const { program } = require('commander');
 const inquirer = require('inquirer');
+const { exec, spawn } = require('child_process');
 
 let projectData;
 
@@ -78,6 +79,9 @@ async function addProject() {
                 editor: answer.editor
             }
         }
+        if (projectData.find(obj => obj.projectName === answers.projectName && obj.editor === answers.editor)) {
+            return console.log("Project name and editor already exists. Please change any one of the field");
+        }
         addJSON(answers);
         console.log("Project added successfully!!!");
     } catch (err) {
@@ -94,7 +98,12 @@ function addJSON(obj) {
 }
 
 async function showProjects() {
-    const projects = projectData.map(obj => `${obj.projectName} - ${obj.editor}`)
+    let projects;
+    if (projectData.length > 0) {
+        projects = projectData.map(obj => `${obj.projectName} - ${obj.editor}`)
+    } else {
+        return console.log("Not Project exist.");
+    }
     try {
         let answers = await inquirer.prompt([
             {
@@ -103,10 +112,42 @@ async function showProjects() {
                 message: 'Open Project:',
                 choices: projects
             }]);
-        const open = projectData.find(obj => obj.projectName === answers.open)
-        console.log(open);
+        const data = answers.open.split(' - ');
+        const openData = projectData.find(obj => obj.projectName === data[0] && obj.editor === data[1]);
+        const editor = getEditor(openData.editor);
+        const run = spawn(editor, [openData.path], { stdio: 'inherit' }, (error, stdout, stderr) => {
+            if (error) {
+                console.log(`error: ${error.message}`);
+                return;
+            }
+            if (stderr) {
+                console.log(`stderr: ${stderr}`);
+                return;
+            }
+            console.log(`stdout: ${stdout}`);
+        });
+        run.on('error', (err) => {
+            console.log(`Command ${editor} not found`);
+        })
     } catch (err) {
         console.log("Error Occured");
         console.log(err);
     }
+}
+
+function getEditor(editor) {
+    let correctEditor;
+    switch (editor) {
+        case 'vscode(code)': correctEditor = 'code';
+            break;
+        case 'vim(vim)': correctEditor = 'vim';
+            break;
+        case 'nvim(nvim)': correctEditor = 'nvim';
+            break;
+        case 'atom(atom)': correctEditor = 'atom';
+            break;
+        default:
+            correctEditor = editor;
+    }
+    return correctEditor;
 }

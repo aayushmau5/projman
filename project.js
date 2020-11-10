@@ -33,8 +33,20 @@ if (program.new) {
         });
     }
 }
-else if (program.delete) console.log("Delete");
-else if (program.modify) console.log("Modify");
+else if (program.delete) {
+    if (fileExists) {
+        deleteProject();
+    } else {
+        console.log("Project data file doesn't exist.\nUse -n or --new to create and insert a project");
+    }
+}
+else if (program.modify) {
+    if (fileExists) {
+        showProjects();
+    } else {
+        console.log("Project data file doesn't exist.\nUse -n or --new to create and insert a project");
+    }
+}
 else {
     // when `project` is ran, show list of all the saved projects
     if (fileExists) {
@@ -102,7 +114,7 @@ async function showProjects() {
     if (projectData.length > 0) {
         projects = projectData.map(obj => `${obj.projectName} - ${obj.editor}`)
     } else {
-        return console.log("Not Project exist.");
+        return console.log("No Project exist.");
     }
     try {
         let answers = await inquirer.prompt([
@@ -129,6 +141,7 @@ async function showProjects() {
         run.on('error', (err) => {
             console.log(`Command ${editor} not found`);
         })
+
     } catch (err) {
         console.log("Error Occured");
         console.log(err);
@@ -142,7 +155,7 @@ function getEditor(editor) {
             break;
         case 'vim(vim)': correctEditor = 'vim';
             break;
-        case 'nvim(nvim)': correctEditor = 'nvim';
+        case 'neovim(nvim)': correctEditor = 'nvim';
             break;
         case 'atom(atom)': correctEditor = 'atom';
             break;
@@ -150,4 +163,32 @@ function getEditor(editor) {
             correctEditor = editor;
     }
     return correctEditor;
+}
+
+async function deleteProject() {
+    let projects;
+    if (projectData.length > 0) {
+        projects = projectData.map(obj => `${obj.projectName} - ${obj.editor}`)
+    } else {
+        return console.log("No Project exist.");
+    }
+    try {
+        let answers = await inquirer.prompt([
+            {
+                type: 'list',
+                name: 'open',
+                message: 'Delete any one Project:',
+                choices: projects
+            }]);
+        const data = answers.open.split(' - ');
+        const openData = projectData.filter(obj => obj.projectName !== data[0] || obj.editor !== data[1]);
+        const data_str = JSON.stringify(openData);
+        fs.writeFile('projectData.json', data_str, (err) => {
+            if (err) throw err;
+            console.log("Project Deleted");
+        })
+    } catch (err) {
+        console.log("Error Occured");
+        console.log(err);
+    }
 }

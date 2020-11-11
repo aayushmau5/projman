@@ -1,10 +1,10 @@
 #!usr/bin/env node
 const fs = require('fs');
 const path = require('path');
+const { spawn } = require('child_process');
 
 const { program } = require('commander');
 const inquirer = require('inquirer');
-const { spawn } = require('child_process');
 
 let projectData;
 
@@ -19,41 +19,12 @@ program.option('-n --new', 'Create a new entry')
 
 program.parse(process.argv);
 
-if (program.new) {
-    // making a new entry for a project
-    if (fileExists) {
-        addProject();
-    } else {
-        fs.writeFile("projectData.json", "[]", (err) => {
-            if (err) throw err;
 
-            console.log("Project Data file created.");
-            projectData = require('./projectData.json');
-            addProject();
-        });
-    }
-}
-else if (program.delete) {
-    if (fileExists) {
-        deleteProject();
-    } else {
-        console.log("Project data file doesn't exist.\nUse -n or --new to create and insert a project");
-    }
-}
-else if (program.modify) {
-    if (fileExists) {
-        modifyProject();
-    } else {
-        console.log("Project data file doesn't exist.\nUse -n or --new to create and insert a project");
-    }
-}
-else {
-    // when `project` is ran, show list of all the saved projects
-    if (fileExists) {
-        showProjects();
-    } else {
-        console.log("Project data file doesn't exist.\nUse -n or --new to create and insert a project");
-    }
+function addJSON(obj) {
+    const data = [...projectData];
+    data.push(obj);
+    const data_str = JSON.stringify(data);
+    fs.writeFileSync('projectData.json', data_str)
 }
 
 async function addProject() {
@@ -102,11 +73,21 @@ async function addProject() {
     }
 }
 
-function addJSON(obj) {
-    const data = [...projectData];
-    data.push(obj);
-    const data_str = JSON.stringify(data);
-    fs.writeFileSync('projectData.json', data_str)
+function getEditor(editor) {
+    let correctEditor;
+    switch (editor) {
+        case 'vscode(code)': correctEditor = 'code';
+            break;
+        case 'vim(vim)': correctEditor = 'vim';
+            break;
+        case 'neovim(nvim)': correctEditor = 'nvim';
+            break;
+        case 'atom(atom)': correctEditor = 'atom';
+            break;
+        default:
+            correctEditor = editor;
+    }
+    return correctEditor;
 }
 
 async function showProjects() {
@@ -148,23 +129,6 @@ async function showProjects() {
     }
 }
 
-function getEditor(editor) {
-    let correctEditor;
-    switch (editor) {
-        case 'vscode(code)': correctEditor = 'code';
-            break;
-        case 'vim(vim)': correctEditor = 'vim';
-            break;
-        case 'neovim(nvim)': correctEditor = 'nvim';
-            break;
-        case 'atom(atom)': correctEditor = 'atom';
-            break;
-        default:
-            correctEditor = editor;
-    }
-    return correctEditor;
-}
-
 async function deleteProject() {
     let projects;
     if (projectData.length > 0) {
@@ -187,30 +151,6 @@ async function deleteProject() {
             if (err) throw err;
             console.log("Project Deleted");
         })
-    } catch (err) {
-        console.log("Error Occured");
-        console.log(err);
-    }
-}
-
-async function modifyProject() {
-    let projects;
-    if (projectData.length > 0) {
-        projects = projectData.map(obj => `${obj.projectName} - ${obj.editor}`)
-    } else {
-        return console.log("No Project exist.");
-    }
-    try {
-        let answers = await inquirer.prompt([
-            {
-                type: 'list',
-                name: 'open',
-                message: 'Modify any one Project:',
-                choices: projects
-            }]);
-        const data = answers.open.split(' - ');
-        const openData = projectData.filter(obj => obj.projectName === data[0] || obj.editor === data[1]);
-        modify(...openData);
     } catch (err) {
         console.log("Error Occured");
         console.log(err);
@@ -256,5 +196,68 @@ async function modify(obj) {
     } catch (err) {
         console.log("Error Occured");
         console.log(err);
+    }
+}
+
+async function modifyProject() {
+    let projects;
+    if (projectData.length > 0) {
+        projects = projectData.map(obj => `${obj.projectName} - ${obj.editor}`)
+    } else {
+        return console.log("No Project exist.");
+    }
+    try {
+        let answers = await inquirer.prompt([
+            {
+                type: 'list',
+                name: 'open',
+                message: 'Modify any one Project:',
+                choices: projects
+            }]);
+        const data = answers.open.split(' - ');
+        const openData = projectData.filter(obj => obj.projectName === data[0] || obj.editor === data[1]);
+        modify(...openData);
+    } catch (err) {
+        console.log("Error Occured");
+        console.log(err);
+    }
+}
+
+if (program.new) {
+    // making a new entry for a project
+    if (fileExists) {
+        addProject();
+    } else {
+        fs.writeFile("projectData.json", "[]", (err) => {
+            if (err) throw err;
+
+            console.log("Project Data file created.");
+            projectData = require('./projectData.json');
+            addProject();
+        });
+    }
+}
+else if (program.delete) {
+    // delete a project
+    if (fileExists) {
+        deleteProject();
+    } else {
+        console.log("Project data file doesn't exist.\nUse -n or --new to create and insert a project");
+    }
+}
+else if (program.modify) {
+    // modify a project
+    if (fileExists) {
+        modifyProject();
+    } else {
+        console.log("Project data file doesn't exist.\nUse -n or --new to create and insert a project");
+    }
+}
+else {
+    // when `project` is ran, show list of all the saved projects
+    if (fileExists) {
+        showProjects();
+    } else {
+        console.log("Project data file doesn't exist.\nUse -n or --new to create and insert a project");
     }
 }

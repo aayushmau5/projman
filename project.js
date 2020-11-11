@@ -4,7 +4,7 @@ const path = require('path');
 
 const { program } = require('commander');
 const inquirer = require('inquirer');
-const { exec, spawn } = require('child_process');
+const { spawn } = require('child_process');
 
 let projectData;
 
@@ -42,7 +42,7 @@ else if (program.delete) {
 }
 else if (program.modify) {
     if (fileExists) {
-        showProjects();
+        modifyProject();
     } else {
         console.log("Project data file doesn't exist.\nUse -n or --new to create and insert a project");
     }
@@ -186,6 +186,72 @@ async function deleteProject() {
         fs.writeFile('projectData.json', data_str, (err) => {
             if (err) throw err;
             console.log("Project Deleted");
+        })
+    } catch (err) {
+        console.log("Error Occured");
+        console.log(err);
+    }
+}
+
+async function modifyProject() {
+    let projects;
+    if (projectData.length > 0) {
+        projects = projectData.map(obj => `${obj.projectName} - ${obj.editor}`)
+    } else {
+        return console.log("No Project exist.");
+    }
+    try {
+        let answers = await inquirer.prompt([
+            {
+                type: 'list',
+                name: 'open',
+                message: 'Modify any one Project:',
+                choices: projects
+            }]);
+        const data = answers.open.split(' - ');
+        const openData = projectData.filter(obj => obj.projectName === data[0] || obj.editor === data[1]);
+        modify(...openData);
+    } catch (err) {
+        console.log("Error Occured");
+        console.log(err);
+    }
+}
+
+async function modify(obj) {
+    console.log(obj);
+    try {
+        let answers = await inquirer.prompt([{
+            type: 'input',
+            name: 'path',
+            message: 'What will be the path to the project? 📁',
+            default: obj.path
+        },
+        {
+            type: 'input',
+            name: 'projectName',
+            message: 'What will be the project name? 🚀',
+            default: obj.projectName
+        },
+        {
+            type: 'input',
+            name: 'editor',
+            message: 'What editor(command) do you want to open the project in?',
+            choices: obj.editor
+        }]);
+        const prevData = projectData.filter(data => data.projectName !== obj.projectName || data.editor !== obj.editor);
+        const modifiedData = {
+            "path": answers.path,
+            "projectName": answers.projectName,
+            "editor": answers.editor
+        }
+        const changeData = [
+            ...prevData,
+            modifiedData
+        ]
+        const data_str = JSON.stringify(changeData);
+        fs.writeFile('projectData.json', data_str, (err) => {
+            if (err) throw err;
+            console.log("Project Modified");
         })
     } catch (err) {
         console.log("Error Occured");

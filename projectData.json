@@ -1,7 +1,12 @@
 [
   {
     "path": "/home/aayushmau5/Documents/My_Projects/node-app-cli",
-    "projectName": "node-app-cli",
-    "editor": "vscode(code)"
+    "projectName": "something cli",
+    "editor": "vim(vim)"
+  },
+  {
+    "path": "/home/aayushmau5/Documents/My_Projects/node-app-cli",
+    "projectName": "something something",
+    "editor": "code"
   }
 ]

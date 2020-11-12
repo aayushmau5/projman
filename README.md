@@ -10,5 +10,5 @@
 - [x] If no option is given, show the list of projects and enter to open the project in the given IDE/Editor
 - [x] defaults with the current working directory
 - [ ] Refactor Code
-- [ ] Make it a shell script
-- [ ] Publish on NPM
+- [x] Make it a shell script
+- [x] Publish on NPM

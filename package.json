@@ -1,7 +1,7 @@
 {
-  "name": "node-app-cli",
+  "name": "projman",
   "version": "1.0.0",
-  "description": "A node cli application",
+  "description": "A Project Manager made in node",
   "main": "project.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,7 +11,7 @@
     "url": "git+https://github.com/aayushmau5/node-app-cli.git"
   },
   "bin": {
-    "proj": "./project.js"
+    "projman": "./project.js"
   },
   "keywords": [
     "cli"

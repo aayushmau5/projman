@@ -1,4 +1,4 @@
-#!usr/bin/env node
+#! /usr/bin/env node
 const fs = require('fs');
 const path = require('path');
 const { spawn } = require('child_process');
@@ -10,7 +10,7 @@ let projectData;
 
 const fileExists = fs.existsSync(path.join(__dirname, 'projectData.json'));
 if (fileExists) {
-    projectData = require('./projectData.json');
+    projectData = require(path.join(__dirname, 'projectData.json'));
 }
 
 program.option('-n --new', 'Create a new entry')
@@ -24,7 +24,7 @@ function addJSON(obj) {
     const data = [...projectData];
     data.push(obj);
     const data_str = JSON.stringify(data);
-    fs.writeFileSync('projectData.json', data_str)
+    fs.writeFileSync(path.join(__dirname, 'projectData.json'), data_str)
 }
 
 async function addProject() {
@@ -147,7 +147,7 @@ async function deleteProject() {
         const data = answers.open.split(' - ');
         const openData = projectData.filter(obj => obj.projectName !== data[0] || obj.editor !== data[1]);
         const data_str = JSON.stringify(openData);
-        fs.writeFile('projectData.json', data_str, (err) => {
+        fs.writeFile(path.join(__dirname, 'projectData.json'), data_str, (err) => {
             if (err) throw err;
             console.log("Project Deleted");
         })
@@ -189,7 +189,7 @@ async function modify(obj) {
             modifiedData
         ]
         const data_str = JSON.stringify(changeData);
-        fs.writeFile('projectData.json', data_str, (err) => {
+        fs.writeFile(path.join(__dirname, 'projectData.json'), data_str, (err) => {
             if (err) throw err;
             console.log("Project Modified");
         })
@@ -228,7 +228,7 @@ if (program.new) {
     if (fileExists) {
         addProject();
     } else {
-        fs.writeFile("projectData.json", "[]", (err) => {
+        fs.writeFile(path.join(__dirname, 'projectData.json'), "[]", (err) => {
             if (err) throw err;
 
             console.log("Project Data file created.");

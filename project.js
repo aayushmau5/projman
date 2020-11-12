@@ -145,7 +145,7 @@ async function deleteProject() {
                 choices: projects
             }]);
         const data = answers.open.split(' - ');
-        const openData = projectData.filter(obj => obj.projectName !== data[0] || obj.editor !== data[1]);
+        const openData = projectData.filter(obj => obj.projectName !== data[0] && obj.editor !== data[1]);
         const data_str = JSON.stringify(openData);
         fs.writeFile(path.join(__dirname, 'projectData.json'), data_str, (err) => {
             if (err) throw err;
@@ -158,7 +158,6 @@ async function deleteProject() {
 }
 
 async function modify(obj) {
-    console.log(obj);
     try {
         let answers = await inquirer.prompt([{
             type: 'input',
@@ -215,7 +214,7 @@ async function modifyProject() {
                 choices: projects
             }]);
         const data = answers.open.split(' - ');
-        const openData = projectData.filter(obj => obj.projectName === data[0] || obj.editor === data[1]);
+        const openData = projectData.filter(obj => obj.projectName === data[0] && obj.editor === data[1]);
         modify(...openData);
     } catch (err) {
         console.log("Error Occured");
@@ -231,10 +230,12 @@ if (program.new) {
         fs.writeFile(path.join(__dirname, 'projectData.json'), "[]", (err) => {
             if (err) throw err;
 
+            fs.chmodSync(path.join(__dirname, 'projectData.json'), 0o755);
             console.log("Project Data file created.");
             projectData = require('./projectData.json');
             addProject();
         });
+
     }
 }
 else if (program.delete) {

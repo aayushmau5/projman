@@ -231,9 +231,14 @@ if (program.new) {
             if (err) throw err;
 
             fs.chmodSync(path.join(__dirname, 'projectData.json'), 0o755);
-            console.log("Project Data file created.");
-            projectData = require('./projectData.json');
-            addProject();
+            fs.access(path.join(__dirname, 'projectData.json'), fs.constants.F_OK | fs.constants.W_OK, (err) => {
+                if (err) {
+                    return console.log("projectData file has no read/write access.\n please run `sudo projman -n` to give read/write access");
+                }
+                projectData = require('./projectData.json');
+                addProject();
+                console.log("Project Data file created.");
+            })
         });
 
     }

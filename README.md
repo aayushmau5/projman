@@ -1,7 +1,5 @@
 # projman
 
-## WARNING - This package is still very much in development. (You may find permission access errors when adding projects. You can use `sudo` and run the project. I'm still working on it.)
-
 ## What is it ?
 
 A CLI project manager which holds all your project path and the preferred editor you want to open the project in.
@@ -11,6 +9,10 @@ No more `cd myprojects`, just run `projman -n` to add the current directory and 
 ## Installation
 
 ```sh
+# Linux/Mac
+sudo npm i -g projman
+
+# Windows
 npm i -g projman
 ```
 
@@ -39,16 +41,3 @@ projman
 ## Found a bug?
 
 Feel free to make an issue at https://github.com/aayushmau5/projman
-
-## TODO
-
-- [x] show various options
-  - [x] -h, --help for help
-  - [x] -n, --new for new project addition
-  - [x] -d, --delete for deleting the projects(list and then delete)
-  - [x] -m, --modify for modifying the editor or something else
-- [x] If no option is given, show the list of projects and enter to open the project in the given IDE/Editor
-- [x] defaults with the current working directory
-- [ ] Refactor Code
-- [x] Make it a shell script
-- [x] Publish on NPM

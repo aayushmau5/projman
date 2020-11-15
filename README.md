@@ -1,5 +1,7 @@
 # projman
 
+## WARNING - This package is still very much in development. (You may find permission access errors when adding projects. You can use `sudo` and run the project. I'm still working on it.)
+
 ## What is it ?
 
 A CLI project manager which holds all your project path and the preferred editor you want to open the project in.
@@ -36,7 +38,7 @@ projman
 
 ## Found a bug?
 
-Feel free to make an issue at https://github.com/aayushmau5/node-app-cli
+Feel free to make an issue at https://github.com/aayushmau5/projman
 
 ## TODO
 

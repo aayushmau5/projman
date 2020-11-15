@@ -7,10 +7,17 @@ const { program } = require('commander');
 const inquirer = require('inquirer');
 
 let projectData;
+let filePath;
+const homedir = require('os').homedir();
+if (process.platform === 'win32') {
+    filePath = path.join(homedir, 'projectData.json');
+} else {
+    filePath = path.join(homedir, '.config', 'projectData.json');
+}
 
-const fileExists = fs.existsSync(path.join(__dirname, 'projectData.json'));
+const fileExists = fs.existsSync(filePath);
 if (fileExists) {
-    projectData = require(path.join(__dirname, 'projectData.json'));
+    projectData = require(filePath);
 }
 
 program.option('-n --new', 'Create a new entry')
@@ -24,7 +31,7 @@ function addJSON(obj) {
     const data = [...projectData];
     data.push(obj);
     const data_str = JSON.stringify(data);
-    fs.writeFileSync(path.join(__dirname, 'projectData.json'), data_str)
+    fs.writeFileSync(filePath, data_str)
 }
 
 async function addProject() {
@@ -147,7 +154,7 @@ async function deleteProject() {
         const data = answers.open.split(' - ');
         const openData = projectData.filter(obj => obj.projectName !== data[0] && obj.editor !== data[1]);
         const data_str = JSON.stringify(openData);
-        fs.writeFile(path.join(__dirname, 'projectData.json'), data_str, (err) => {
+        fs.writeFile(filePath, data_str, (err) => {
             if (err) throw err;
             console.log("Project Deleted");
         })
@@ -188,7 +195,7 @@ async function modify(obj) {
             modifiedData
         ]
         const data_str = JSON.stringify(changeData);
-        fs.writeFile(path.join(__dirname, 'projectData.json'), data_str, (err) => {
+        fs.writeFile(filePath, data_str, (err) => {
             if (err) throw err;
             console.log("Project Modified");
         })
@@ -227,18 +234,12 @@ if (program.new) {
     if (fileExists) {
         addProject();
     } else {
-        fs.writeFile(path.join(__dirname, 'projectData.json'), "[]", (err) => {
+        fs.writeFile(filePath, "[]", (err) => {
             if (err) throw err;
 
-            fs.chmodSync(path.join(__dirname, 'projectData.json'), 0o755);
-            fs.access(path.join(__dirname, 'projectData.json'), fs.constants.F_OK | fs.constants.W_OK, (err) => {
-                if (err) {
-                    return console.log("projectData file has no read/write access.\n please run `sudo projman -n` to give read/write access");
-                }
-                projectData = require('./projectData.json');
-                addProject();
-                console.log("Project Data file created.");
-            })
+            console.log("Project Data file created.");
+            projectData = require(filePath);
+            addProject();
         });
 
     }

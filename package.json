@@ -1,7 +1,7 @@
 {
   "name": "projman",
-  "version": "1.2.0",
-  "description": "A Project Manager made in node",
+  "version": "1.2.1",
+  "description": "A Project Manager made using nodejs",
   "main": "project.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -14,7 +14,8 @@
     "projman": "./project.js"
   },
   "keywords": [
-    "cli"
+    "cli",
+    "nodejs"
   ],
   "preferGlobal": true,
   "author": "aayushmau5",

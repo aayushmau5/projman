@@ -1,6 +1,6 @@
 {
   "name": "projman",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "A Project Manager made using nodejs",
   "main": "project.js",
   "scripts": {
@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/aayushmau5/projman#readme",
   "dependencies": {
-    "commander": "^6.2.0",
-    "inquirer": "^7.3.3"
+    "commander": "^8.0.0",
+    "inquirer": "^8.1.1"
   }
 }

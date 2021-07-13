@@ -1,23 +1,20 @@
 import { deleteProjectPrompt } from "../utils/prompts";
+import { getAllProjects } from "../utils/manageConfig";
 
 export default async function deleteProject() {
-  let projects;
-  if (projectData.length > 0) {
-    projects = projectData.map((obj) => `${obj.projectName} - ${obj.editor}`);
-  } else {
-    return console.log("No Project exist.");
+  const projects = getAllProjects();
+  const projectKeys = Object.keys(projects);
+  if (projectKeys.length < 1) {
+    console.log("No Project exist.");
+    return;
   }
   try {
-    let answers = await deleteProjectPrompt(projects);
-    const data = answers.open.split(" - ");
-    const openData = projectData.filter(
-      (obj) => obj.projectName !== data[0] && obj.editor !== data[1]
+    const projectNames: string[] = projectKeys.map(
+      (key) => `${projects[key].projectName} - ${projects[key].editor}`
     );
-    const data_str = JSON.stringify(openData);
-    fs.writeFile(filePath, data_str, (err) => {
-      if (err) throw err;
-      console.log("Project Deleted");
-    });
+    const answers = await deleteProjectPrompt(projectNames);
+    console.log(answers);
+    console.log("Project Deleted");
   } catch (err) {
     console.log("Error Occured");
     console.log(err);

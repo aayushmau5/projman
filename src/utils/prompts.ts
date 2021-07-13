@@ -1,7 +1,9 @@
+import path from "path";
 import inquirer from "inquirer";
+import { Answer, openProject } from "../types";
 
-export async function addProjectPrompt() {
-  let answers = await inquirer.prompt([
+export async function addProjectPrompt(): Promise<Answer> {
+  let answers: Answer = await inquirer.prompt([
     {
       type: "input",
       name: "path",
@@ -48,7 +50,9 @@ export async function addProjectPrompt() {
   return answers;
 }
 
-export async function deleteProjectPrompt(projects) {
+export async function deleteProjectPrompt(
+  projects: string[]
+): Promise<openProject> {
   return await inquirer.prompt([
     {
       type: "list",
@@ -59,7 +63,7 @@ export async function deleteProjectPrompt(projects) {
   ]);
 }
 
-export async function openProjectPrompt(projects) {
+export async function openProjectPrompt(projects: string[]) {
   return await inquirer.prompt([
     {
       type: "list",
@@ -70,7 +74,7 @@ export async function openProjectPrompt(projects) {
   ]);
 }
 
-export async function listProjectPrompt(projects) {
+export async function listProjectPrompt(projects: string[]) {
   return await inquirer.prompt([
     {
       type: "list",
@@ -81,7 +85,7 @@ export async function listProjectPrompt(projects) {
   ]);
 }
 
-export async function modifyProjectPrompt(obj) {
+export async function modifyProjectPrompt(obj: Answer) {
   return await inquirer.prompt([
     {
       type: "input",

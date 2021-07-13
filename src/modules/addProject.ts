@@ -1,24 +1,20 @@
 import { addProjectPrompt } from "../utils/prompts";
+import {
+  getProject,
+  addProject as addProjectConfig,
+} from "../utils/manageConfig";
 
 export default async function addProject() {
   try {
     const answers = await addProjectPrompt();
-    if (
-      projectData.find(
-        (obj) =>
-          obj.projectName === answers.projectName &&
-          obj.editor === answers.editor
-      )
-    ) {
-      return console.log(
+    const key = answers.projectName + answers.editor;
+    if (getProject(key)) {
+      console.log(
         "Project name and editor already exists. Please change any one of the field"
       );
+      return;
     }
-    // answers.projectName
-    // answers.path
-    // answers.editor
-    const key = answers.projectName + answers.editor;
-    const value = answers;
+    addProjectConfig(key, answers);
     console.log("Project added successfully!!!");
   } catch (err) {
     console.log("Error Occured");

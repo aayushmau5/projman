@@ -1,11 +1,12 @@
 #! /usr/bin/env node
-const fs = require("fs");
-const path = require("path");
-const { program } = require("commander");
+import { Command } from "commander";
 
-// https://github.com/pascalgn/npm-publish-action
+import addProject from "./modules/addProject";
+import showProjects from "./modules/showProjects";
+import deleteProject from "./modules/deleteProject";
+import modifyProject from "./modules/modifyProject";
 
-let projectData;
+const program = new Command();
 
 program
   .option("-n --new", "Create a new entry")
@@ -14,44 +15,18 @@ program
 
 program.parse(process.argv);
 
-if (program.new) {
-  // making a new entry for a project
-  if (fileExists) {
-    addProject();
-  } else {
-    fs.writeFile(filePath, "[]", (err) => {
-      if (err) throw err;
+const options = program.opts();
 
-      console.log("Project Data file created.");
-      projectData = require(filePath);
-      addProject();
-    });
-  }
-} else if (program.delete) {
+if (options.new) {
+  // add a new project
+  addProject();
+} else if (options.delete) {
   // delete a project
-  if (fileExists) {
-    deleteProject();
-  } else {
-    console.log(
-      "Project data file doesn't exist.\nUse -n or --new to create and insert a project"
-    );
-  }
-} else if (program.modify) {
+  deleteProject();
+} else if (options.modify) {
   // modify a project
-  if (fileExists) {
-    modifyProject();
-  } else {
-    console.log(
-      "Project data file doesn't exist.\nUse -n or --new to create and insert a project"
-    );
-  }
+  modifyProject();
 } else {
-  // when `project` is ran, show list of all the saved projects
-  if (fileExists) {
-    showProjects();
-  } else {
-    console.log(
-      "Project data file doesn't exist.\nUse -n or --new to create and insert a project"
-    );
-  }
+  // list of all the saved projects
+  showProjects();
 }

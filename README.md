@@ -9,10 +9,6 @@ No more `cd myprojects`, just run `projman -n` to add the current directory and 
 ## Installation
 
 ```sh
-# Linux/Mac
-sudo npm i -g projman
-
-# Windows
 npm i -g projman
 ```
 

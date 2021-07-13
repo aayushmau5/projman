@@ -2,7 +2,7 @@
   "name": "projman",
   "version": "1.2.2",
   "description": "A Project Manager made using nodejs",
-  "main": "project.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -26,6 +26,7 @@
   "homepage": "https://github.com/aayushmau5/projman#readme",
   "dependencies": {
     "commander": "^8.0.0",
+    "conf": "^10.0.1",
     "inquirer": "^8.1.1"
   }
 }

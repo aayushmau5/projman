@@ -1,6 +1,6 @@
-const inquirer = require("inquirer");
+import inquirer from "inquirer";
 
-exports.addProjectPrompt = async function () {
+export async function addProjectPrompt() {
   let answers = await inquirer.prompt([
     {
       type: "input",
@@ -46,9 +46,9 @@ exports.addProjectPrompt = async function () {
   }
 
   return answers;
-};
+}
 
-exports.deleteProjectPrompt = async function (projects) {
+export async function deleteProjectPrompt(projects) {
   return await inquirer.prompt([
     {
       type: "list",
@@ -57,9 +57,9 @@ exports.deleteProjectPrompt = async function (projects) {
       choices: projects,
     },
   ]);
-};
+}
 
-exports.openProjectPrompt = async function (projects) {
+export async function openProjectPrompt(projects) {
   return await inquirer.prompt([
     {
       type: "list",
@@ -68,9 +68,9 @@ exports.openProjectPrompt = async function (projects) {
       choices: projects,
     },
   ]);
-};
+}
 
-exports.listProjectPrompt = async function (projects) {
+export async function listProjectPrompt(projects) {
   return await inquirer.prompt([
     {
       type: "list",
@@ -79,9 +79,9 @@ exports.listProjectPrompt = async function (projects) {
       choices: projects,
     },
   ]);
-};
+}
 
-exports.modifyProjectPrompt = async function (obj) {
+export async function modifyProjectPrompt(obj) {
   return await inquirer.prompt([
     {
       type: "input",
@@ -102,4 +102,4 @@ exports.modifyProjectPrompt = async function (obj) {
       choices: obj.editor,
     },
   ]);
-};
+}

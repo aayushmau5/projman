@@ -1,7 +1,6 @@
-const { spawn } = require("child_process");
-
-const { openProjectPrompt } = require("../utils/prompts");
-const getEditor = require("./getEditor");
+import { spawn } from "child_process";
+import { openProjectPrompt } from "../utils/prompts";
+import getEditor from "../utils/getEditor";
 
 async function showProjects() {
   if (projectData.length > 0) {

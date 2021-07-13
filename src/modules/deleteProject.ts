@@ -1,6 +1,6 @@
-const { deleteProjectPrompt } = require("../utils/prompts");
+import { deleteProjectPrompt } from "../utils/prompts";
 
-module.exports = async function deleteProject() {
+export default async function deleteProject() {
   let projects;
   if (projectData.length > 0) {
     projects = projectData.map((obj) => `${obj.projectName} - ${obj.editor}`);
@@ -22,4 +22,4 @@ module.exports = async function deleteProject() {
     console.log("Error Occured");
     console.log(err);
   }
-};
+}

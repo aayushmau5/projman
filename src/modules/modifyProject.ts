@@ -1,4 +1,4 @@
-const { listProjectPrompt, modifyProjectPrompt } = require("../utils/prompts");
+import { listProjectPrompt, modifyProjectPrompt } from "../utils/prompts";
 
 async function modify(obj) {
   try {
@@ -24,7 +24,7 @@ async function modify(obj) {
   }
 }
 
-module.exports = async function modifyProject() {
+export default async function modifyProject() {
   let projects;
   if (projectData.length > 0) {
     projects = projectData.map((obj) => `${obj.projectName} - ${obj.editor}`);
@@ -42,4 +42,4 @@ module.exports = async function modifyProject() {
     console.log("Error Occured");
     console.log(err);
   }
-};
+}

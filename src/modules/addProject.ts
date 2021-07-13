@@ -1,6 +1,6 @@
-const { addProjectPrompt } = require("../utils/prompts");
+import { addProjectPrompt } from "../utils/prompts";
 
-module.exports = async function addProject() {
+export default async function addProject() {
   try {
     const answers = await addProjectPrompt();
     if (
@@ -17,10 +17,11 @@ module.exports = async function addProject() {
     // answers.projectName
     // answers.path
     // answers.editor
-    addJSON(answers);
+    const key = answers.projectName + answers.editor;
+    const value = answers;
     console.log("Project added successfully!!!");
   } catch (err) {
     console.log("Error Occured");
     console.log(err);
   }
-};
+}

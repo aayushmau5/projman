@@ -1,4 +1,4 @@
-module.exports = function getEditor(editor) {
+export default function getEditor(editor: string): string {
   switch (editor) {
     case "vscode(code)":
       return "code";
@@ -11,4 +11,4 @@ module.exports = function getEditor(editor) {
     default:
       return editor;
   }
-};
+}

@@ -2,10 +2,12 @@ import { spawn } from "child_process";
 
 import { openProjectPrompt } from "../utils/prompts";
 import getEditor from "../utils/getEditor";
-import { getAllProjects } from "../utils/manageConfig";
+import { getAllProjectsFromConfig } from "../utils/manageConfig";
+import { Answer } from "../types";
+import { getKey } from "../utils/getKey";
 
 export default async function showProjects() {
-  const projects = getAllProjects();
+  const projects = getAllProjectsFromConfig();
   const projectKeys = Object.keys(projects);
 
   if (projectKeys.length < 1) {
@@ -14,34 +16,23 @@ export default async function showProjects() {
   }
   try {
     const projectNames: string[] = projectKeys.map(
-      (key) => `${projects[key].projectName} - ${projects[key].editor}`
+      (key) =>
+        `${(projects[key] as Answer).projectName} - ${
+          (projects[key] as Answer).editor
+        }`
     );
-    const answers = await openProjectPrompt(projectNames);
-    console.log(answers);
-    // const openData = projectData.find(
-    //   (obj) => obj.projectName === data[0] && obj.editor === data[1]
-    // );
-    // const editor = getEditor(openData.editor);
-    // const run = spawn(
-    //   editor,
-    //   [openData.path],
-    //   { stdio: "inherit" }
-    //   // (error, stdout, stderr) => {
-    //   //   if (error) {
-    //   //     console.log(`error: ${error.message}`);
-    //   //     return;
-    //   //   }
-    //   //   if (stderr) {
-    //   //     console.log(`stderr: ${stderr}`);
-    //   //     return;
-    //   //   }
-    //   //   console.log(`stdout: ${stdout}`);
-    //   // }
-    // );
-    // run.on("error", (err: any) => {
-    //   console.error(err);
-    //   console.log(`Command ${editor} not found`);
-    // });
+    const answer = await openProjectPrompt(projectNames);
+    const [selectedProjectName, selectedEditor] = answer.open.split(" - ");
+    const [key] = getKey(projects, projectKeys, {
+      selectedProjectName,
+      selectedEditor,
+    });
+    const openData = projects[key] as Answer;
+    const editor = getEditor(openData.editor);
+    const run = spawn(editor, [openData.path], { stdio: "inherit" });
+    run.on("error", (_err: any) => {
+      console.log(`Editor ${editor} not found`);
+    });
   } catch (err) {
     console.log("Error Occured");
     console.log(err);

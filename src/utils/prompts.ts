@@ -90,7 +90,7 @@ export async function listProjectPrompt(
 }
 
 export async function modifyProjectPrompt(obj: Answer): Promise<Answer> {
-  return await inquirer.prompt([
+  let answers: Answer = await inquirer.prompt([
     {
       type: "input",
       name: "path",
@@ -104,10 +104,35 @@ export async function modifyProjectPrompt(obj: Answer): Promise<Answer> {
       default: obj.projectName,
     },
     {
-      type: "input",
+      type: "list",
       name: "editor",
       message: "What editor(command) do you want to open the project in?",
-      choices: obj.editor,
+      choices: [
+        "VSCode(code)",
+        "Vim(vim)",
+        "Neovim(nvim)",
+        "Atom(atom)",
+        "Add Your Own",
+      ],
+      filter: function (val) {
+        return val.toLowerCase();
+      },
     },
   ]);
+  if (answers.editor === "add your own") {
+    const answer = await inquirer.prompt([
+      {
+        type: "input",
+        name: "editor",
+        message: "Enter the editor command",
+        default: "",
+      },
+    ]);
+    answers = {
+      ...answers,
+      editor: answer.editor,
+    };
+  }
+
+  return answers;
 }

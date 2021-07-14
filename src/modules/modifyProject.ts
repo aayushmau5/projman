@@ -1,43 +1,36 @@
 import { listProjectPrompt, modifyProjectPrompt } from "../utils/prompts";
-
-async function modify(obj) {
-  try {
-    let answers = await modifyProjectPrompt(obj);
-    const prevData = projectData.filter(
-      (data) =>
-        data.projectName !== obj.projectName || data.editor !== obj.editor
-    );
-    const modifiedData = {
-      path: answers.path,
-      projectName: answers.projectName,
-      editor: answers.editor,
-    };
-    const changeData = [...prevData, modifiedData];
-    const data_str = JSON.stringify(changeData);
-    fs.writeFile(filePath, data_str, (err) => {
-      if (err) throw err;
-      console.log("Project Modified");
-    });
-  } catch (err) {
-    console.log("Error Occured");
-    console.log(err);
-  }
-}
+import {
+  addProjectToConfig,
+  getAllProjectsFromConfig,
+} from "../utils/manageConfig";
+import { Answer } from "../types";
+import { getKey } from "../utils/getKey";
+import getEditor from "../utils/getEditor";
 
 export default async function modifyProject() {
-  let projects;
-  if (projectData.length > 0) {
-    projects = projectData.map((obj) => `${obj.projectName} - ${obj.editor}`);
-  } else {
-    return console.log("No Project exist.");
+  const projects = getAllProjectsFromConfig();
+  const projectKeys = Object.keys(projects);
+  if (projectKeys.length < 1) {
+    console.log("No Project exist.");
+    return;
   }
   try {
-    let answers = await listProjectPrompt(projects);
-    const data = answers.open.split(" - ");
-    const openData = projectData.filter(
-      (obj) => obj.projectName === data[0] && obj.editor === data[1]
+    const projectNames: string[] = projectKeys.map(
+      (key) =>
+        `${(projects[key] as Answer).projectName} - ${
+          (projects[key] as Answer).editor
+        }`
     );
-    modify(...openData);
+    const answer = await listProjectPrompt(projectNames);
+    const [selectedProjectName, selectedEditor] = answer.open.split(" - ");
+    const [key] = getKey(projects, projectKeys, {
+      selectedProjectName,
+      selectedEditor,
+    });
+    const modifiedProject = await modifyProjectPrompt(projects[key] as Answer);
+    modifiedProject.editor = getEditor(modifiedProject.editor);
+    addProjectToConfig(key, modifiedProject);
+    console.log("Project modified.");
   } catch (err) {
     console.log("Error Occured");
     console.log(err);

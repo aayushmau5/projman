@@ -31,7 +31,7 @@ export default async function showProjects() {
     const editor = getEditor(openData.editor);
     const run = spawn(editor, [openData.path], { stdio: "inherit" });
     run.on("error", (_err: any) => {
-      console.log(`Editor ${editor} not found`);
+      console.log(`Editor command '${editor}' not found`);
     });
   } catch (err) {
     console.log("Error Occured");

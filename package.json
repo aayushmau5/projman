@@ -1,10 +1,12 @@
 {
   "name": "projman",
   "version": "2.0.0",
-  "description": "A Project Manager made using nodejs",
-  "main": "dist/index.js",
+  "description": "A CLI Project Manager",
+  "main": "./dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "prepack": "npm run clean && npm run build"
   },
   "repository": {
     "type": "git",
@@ -18,8 +20,8 @@
     "nodejs"
   ],
   "preferGlobal": true,
-  "author": "aayushmau5",
-  "license": "ISC",
+  "author": "Aayush Kumar Sahu",
+  "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/aayushmau5/projman/issues"
   },

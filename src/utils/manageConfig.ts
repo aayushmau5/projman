@@ -4,18 +4,18 @@ import { Answer } from "../types";
 
 const config = new Conf();
 
-export const addProject = (key: string, value: Answer) => {
+export const addProjectToConfig = (key: string, value: Answer) => {
   config.set(key, value);
 };
 
-export const deleteProject = (key: string) => {
+export const deleteProjectFromConfig = (key: string) => {
   config.delete(key);
 };
 
-export const getProject = (key: string) => {
+export const getProjectFromConfig = (key: string) => {
   return config.get(key);
 };
 
-export const getAllProjects = () => {
+export const getAllProjectsFromConfig = () => {
   return config.store;
 };

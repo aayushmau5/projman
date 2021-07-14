@@ -7,3 +7,14 @@ export interface Answer {
 export interface openProject {
   open: string;
 }
+
+export interface Selection {
+  selectedProjectName: string;
+  selectedEditor: string;
+}
+
+export type getKeyFunctionType = (
+  projects: Record<string, unknown>,
+  projectKeys: string[],
+  selection: Selection
+) => string[];

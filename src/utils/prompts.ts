@@ -63,7 +63,9 @@ export async function deleteProjectPrompt(
   ]);
 }
 
-export async function openProjectPrompt(projects: string[]) {
+export async function openProjectPrompt(
+  projects: string[]
+): Promise<openProject> {
   return await inquirer.prompt([
     {
       type: "list",
@@ -74,7 +76,9 @@ export async function openProjectPrompt(projects: string[]) {
   ]);
 }
 
-export async function listProjectPrompt(projects: string[]) {
+export async function listProjectPrompt(
+  projects: string[]
+): Promise<openProject> {
   return await inquirer.prompt([
     {
       type: "list",
@@ -85,7 +89,7 @@ export async function listProjectPrompt(projects: string[]) {
   ]);
 }
 
-export async function modifyProjectPrompt(obj: Answer) {
+export async function modifyProjectPrompt(obj: Answer): Promise<Answer> {
   return await inquirer.prompt([
     {
       type: "input",

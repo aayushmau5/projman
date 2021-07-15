@@ -16,7 +16,7 @@ export default async function addProject() {
       return;
     }
     addProjectToConfig(key, answers);
-    console.log("Project added successfully!!!");
+    console.log("Project entry added successfully!!!");
   } catch (err) {
     console.log("Error Occured");
     console.log(err);

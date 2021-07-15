@@ -27,7 +27,7 @@ export default async function deleteProject() {
       selectedEditor,
     });
     deleteProjectFromConfig(key);
-    console.log("Project Deleted");
+    console.log("Project Entry Deleted");
   } catch (err) {
     console.log("Error Occured");
     console.log(err);

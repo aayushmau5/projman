@@ -30,7 +30,7 @@ export default async function modifyProject() {
     const modifiedProject = await modifyProjectPrompt(projects[key] as Answer);
     modifiedProject.editor = getEditor(modifiedProject.editor);
     addProjectToConfig(key, modifiedProject);
-    console.log("Project modified.");
+    console.log("Project entry modified.");
   } catch (err) {
     console.log("Error Occured");
     console.log(err);

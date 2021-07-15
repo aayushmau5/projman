@@ -7,5 +7,5 @@ export default async function resetConfig() {
     return;
   }
   resetConfigFile();
-  console.log("Project config file reset.");
+  console.log("projman config file reset.");
 }

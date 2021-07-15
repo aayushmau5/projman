@@ -19,3 +19,7 @@ export const getProjectFromConfig = (key: string) => {
 export const getAllProjectsFromConfig = () => {
   return config.store;
 };
+
+export const resetConfigFile = () => {
+  return config.clear();
+};

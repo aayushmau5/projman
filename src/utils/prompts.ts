@@ -1,6 +1,6 @@
 import path from "path";
 import inquirer from "inquirer";
-import { Answer, openProject } from "../types";
+import { Answer, openProject, ResetConfig } from "../types";
 
 export async function addProjectPrompt(): Promise<Answer> {
   let answers: Answer = await inquirer.prompt([
@@ -135,4 +135,14 @@ export async function modifyProjectPrompt(obj: Answer): Promise<Answer> {
   }
 
   return answers;
+}
+
+export async function resetConfigPrompt(): Promise<ResetConfig> {
+  return await inquirer.prompt([
+    {
+      type: "confirm",
+      name: "remove",
+      message: "Are you sure you want to remove all data from config file?",
+    },
+  ]);
 }

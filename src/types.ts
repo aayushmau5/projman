@@ -18,3 +18,7 @@ export type getKeyFunctionType = (
   projectKeys: string[],
   selection: Selection
 ) => string[];
+
+export interface ResetConfig {
+  remove: boolean;
+}

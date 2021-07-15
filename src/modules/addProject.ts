@@ -7,7 +7,8 @@ import {
 export default async function addProject() {
   try {
     const answers = await addProjectPrompt();
-    const key = answers.projectName + answers.editor;
+    const escapedProjectName = answers.projectName.replace(/\./g, "");
+    const key = escapedProjectName + answers.editor;
     if (getProjectFromConfig(key)) {
       console.log(
         "Project name and editor already exists. Please change any one of the field"
